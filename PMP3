@@ -1,0 +1,92 @@
+# -*- coding: cp1251 -*-
+students = {
+    "Шевченко Тарас": {"адреса": "Соборна, 12", "школа": 1, "клас": 10},
+    "Коваленко Олена": {"адреса": "Харківська, 45", "школа": 7, "клас": 9},
+    "Бондаренко Іван": {"адреса": "Перемоги, 3", "школа": 1, "клас": 11},
+    "Мельник Марія": {"адреса": "Троїцька, 88", "школа": 2, "клас": 10},
+    "Ткаченко Дмитро": {"адреса": "Петропавлівська, 15", "школа": 1, "клас": 8},
+    "Кравченко Анна": {"адреса": "Миру, 21", "школа": 7, "клас": 11},
+    "Лисенко Максим": {"адреса": "Героїв Крут, 4", "школа": 1, "клас": 10},
+    "Мороз Юлія": {"адреса": "Козацька, 19", "школа": 3, "клас": 10},
+    "Сидоренко Олег": {"адреса": "Сумська, 56", "школа": 1, "клас": 11},
+    "Павленко Вікторія": {"адреса": "Заливна, 7", "школа": 2, "клас": 11}
+}
+
+
+def Print(d):
+    for k, v in d.items():
+        print(f"{k} - адреса: {v['адреса']}, школа: {v['школа']}, клас: {v['клас']}")
+
+
+def add(d, key, address, school, grade):
+    d[key] = {"адреса": address, "школа": school, "клас": grade}
+    print("Додано:", key)
+
+
+def del_rec(d, key):
+    try:
+        del d[key]
+        print("Видалено:", key)
+    except KeyError:
+        print("Помилка: такого ключа немає")
+
+
+def print_sort(d):
+    s = {k: d[k] for k in sorted(d)}
+    print("Відсортовано:")
+    for k, v in s.items():
+        print(f"{k} - адреса: {v['адреса']}, школа: {v['школа']}, клас: {v['клас']}")
+
+
+def task(d, school):
+    res = []
+    for k, v in d.items():
+        if v["школа"] == school and v["клас"] in (10, 11):
+            parts = k.split()
+            surname = parts[0]
+            name = parts[1] if len(parts) > 1 else ""
+            res.append((k, (surname, name, v["адреса"])))
+    return res
+
+
+def main():
+    while True:
+        print("\n1. Всі записи\n2. Додати\n3. Видалити\n4. Сортувати\n5. Завдання\n0. Вихід")
+        c = input("Виберіть дію: ").strip()
+
+        if c == "1":
+            Print(students)
+
+        elif c == "2":
+            k = input("Прізвище та Ім'я: ").strip()
+            addr = input("Адреса: ").strip()
+            try:
+                sch = int(input("Школа: "))
+                gr = int(input("Клас: "))
+                add(students, k, addr, sch, gr)
+            except ValueError:
+                print("Помилка: введіть числа")
+
+        elif c == "3":
+            k = input("Прізвище та Ім'я для видалення: ").strip()
+            del_rec(students, k)
+
+        elif c == "4":
+            print_sort(students)
+
+        elif c == "5":
+            try:
+                sch = int(input("Номер школи: "))
+                res = task(students, sch)
+                print("Результат:")
+                for key, val in res:
+                    print(f"{key}: {val}")
+            except ValueError:
+                print("Помилка: введіть число")
+
+        elif c == "0":
+            break
+
+
+if __name__ == "__main__":
+    main()
